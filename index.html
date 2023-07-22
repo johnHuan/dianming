@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>点名工具</title>
+    <style type="text/css" rel="stylesheet">
+        body {
+            background-color: #000
+        }
+
+        .rect {
+            width: 80px;
+            height: 20px;
+            border: 1px solid red;
+            line-height: 20px;
+            text-align: center;
+            float: left;
+            margin: 5px 5px;
+            color: #fff;
+        }
+        .header {
+            color: #ff6600;
+            text-align: center;
+            background-color: aqua;
+        }
+        #container {
+            /* width: 920px; */
+            width: 80%;
+            
+            margin: 50px auto 10px;
+            border: 1px dashed blue;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        #button {
+            width: 300px;
+            height: 30px;
+            border: 1px solid green;
+            border-radius: 5px;
+            color: #fff;
+            background-color: green;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+        #button:active {
+            background-color: lightgreen;
+        }
+
+        .select {
+            background-color: yellow;
+            color: #000;
+        }
+</style>
+</head>
+<body>
+    
+    <div id="container"><h1 class="header">点名工具</h1></div>
+<div id="button">点击</div>
+<script type="text/javascript" id="data">
+/*
+夏雪
+杨纪鹏
+蒙伟
+郭葳
+刘浩
+许媛媛
+张欣
+刘锦阳
+许彬
+甘滨蕊
+张文
+犹伟
+黄博聪
+吴攀
+宋彬冰
+贾硕
+冉昕晨
+曾杨
+吴佩洁
+刘毅
+宫英帝
+张嘉伟
+操兵
+冯继豪
+冉子林
+董二飞
+刘冬冬
+吕修颐
+罗佳
+唐烽
+但林阳
+张钊
+朱古月
+钱政
+丛慧芳
+王冰
+陶龙
+李雪晶
+夏冬
+田朋
+金悦
+阴从基
+钟佩华
+邹锐
+刘楷
+王莲
+史伟玲
+朱莎
+江文辉
+韦笑
+巩群喜
+喻寅昀
+李伟凯
+杨明明
+胡涛涛
+张雪璐
+潘金玉
+张甜甜
+涂攀
+李小梅
+万展志
+李芝
+刘飓涛
+杨志鑫
+张桓
+李睿
+王升
+谭继可
+于和路
+向弋
+胡瑞昌
+江天鹏
+汪俊宏
+郝一璇
+*/
+</script>
+
+<script>
+    let J = {
+        id: function (idName) {
+            return document.getElementById(idName);
+        },
+        getData(idName) {
+            let node = this.id(idName);
+            let txt = node.innerHTML.replace(/\/\*|\*\//g, "").replace(/\s+/g, ' ').trim();
+            node.parentNode.removeChild(node)
+            return txt.split(' ');
+        },
+        cFrag: function () {
+            return document.createDocumentFragment();
+        },
+        cElem: function (name) {
+            return document.createElement(name);
+        }
+    }
+
+    onload = function () {
+        // 添加数据
+        let list = J.getData('data'), docfrag = J.cFrag(), nodes = [], clearNode;
+        console.log(list)
+        for (let i = 0; i < list.length; i++) {
+            let div = J.cElem('div')
+            div.innerHTML = list[i];
+            div.className = 'rect'
+            docfrag.appendChild(div);
+            nodes.push(div);
+        }
+        J.id('container').appendChild(docfrag);
+        clearNode = J.cElem('div');
+        clearNode.className = 'clear';
+        J.id('container').appendChild(clearNode);
+        // 绑定计时器
+        let start = false, interval, select;
+        J.id('button').onclick = function () {
+            if (start) {  // 滚动
+                clearInterval(interval);
+                this.innerHTML = ' 点 击 ';
+            } else {
+                interval = setInterval(function () {
+                    if (select) select.className = 'rect';
+                    let i = parseInt(Math.random() * 1000) % list.length;
+                    select = nodes[i];
+                    select.className += ' select';
+                }, 30);
+                this.innerHTML = ' 停 止 ';
+            }
+            start = !start;
+        }
+    };
+</script>
+</body>
+</html>
